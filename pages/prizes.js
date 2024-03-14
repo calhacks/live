@@ -4,18 +4,7 @@ import Loader from '../components/Loader';
 import React from 'react';
 import { apiBaseUrl } from '../lib/constants';
 
-const PrizesPage = () => {
-  const [data, setData] = React.useState(null);
-
-  React.useEffect(() => {
-    fetch(`${apiBaseUrl}/live/prizes`)
-      .then(async (res) => {
-        const { prizes } = await res.json();
-        setData(prizes);
-      })
-      .catch((err) => console.error(err));
-  }, [setData]);
-
+const PrizesPage = ({ data }) => {
   return (
     <>
       <Header />
@@ -68,5 +57,26 @@ const PrizesPage = () => {
     </>
   );
 };
+
+export async function getStaticProps() {
+  try {
+    const res = await fetch(`${apiBaseUrl}/live/prizes`);
+    const { prizes } = await res.json();
+
+    return {
+      props: {
+        data: prizes,
+      },
+      revalidate: 60, // Re-generate page after 60 seconds
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      props: {
+        data: null,
+      },
+    };
+  }
+}
 
 export default PrizesPage;

@@ -13,11 +13,11 @@ const hackStarts = new Date(1708876800 * 1000).getTime();
 const hackEnds = new Date(1708916400 * 1000).getTime();
 
 const PACIFIC_TZ = 'America/Los_Angeles';
-const localTimezoneName = moment.tz.guess();
+const localTimezoneName = PACIFIC_TZ;
 let localTimezone;
 let notPDT;
 
-const HomePage = () => {
+const HomePage = ({ data }) => {
   const [timeLeft, setTimeLeft] = React.useState(null);
   const [timezone, setTimezone] = React.useState(null);
   const [selectedDay, setSelectedDay] = React.useState(0);
@@ -72,36 +72,22 @@ const HomePage = () => {
 
   const fetchSchedule = (tz = localTimezoneName) => {
     // load
-    setSections(null);
+    const { days, types, today, sections, timezone } = data;
+    // TODO: jank temp fix for calhacks api making days + 1
+    const offsetSections = sections.map((section) => ({ ...section, day: section.day }));
 
-    fetch(`${apiBaseUrl}/live/schedule?tz=${tz}`)
-      .then(async (res) => {
-        const response = await res.json();
-        const { days, types, today, sections, timezone } = response;
+    setDays(days);
+    setTypes(types);
+    setFilteredTypes(types);
+    setTimezone(timezone);
+    setSections(offsetSections);
 
-        // first timezone returned is local
-        if (!localTimezone) {
-          localTimezone = response.timezone;
-          notPDT = localTimezone && localTimezone !== 'PDT';
-        }
+    // if today is in correct range, select that day, else default to first
+    setSelectedDay(today >= 0 && today <= days.length - 1 ? today : 0);
 
-        // TODO: jank temp fix for calhacks api making days + 1
-        const offsetSections = sections.map((section) => ({ ...section, day: section.day }));
-
-        setDays(days);
-        setTypes(types);
-        setFilteredTypes(types);
-        setTimezone(timezone);
-        setSections(offsetSections);
-
-        // if today is in correct range, select that day, else default to first
-        setSelectedDay(today >= 0 && today <= days.length - 1 ? today : 0);
-
-        if (new Date() < hackStarts) {
-          setSelectedDay(0);
-        }
-      })
-      .catch((err) => console.error(err));
+    if (new Date() < hackStarts) {
+      setSelectedDay(0);
+    }
   };
 
   const renderSection = (section) => {
@@ -323,5 +309,26 @@ const HomePage = () => {
     </>
   );
 };
+
+export async function getStaticProps() {
+  try {
+    const res = await fetch(`${apiBaseUrl}/live/schedule?tz=${localTimezoneName}`)
+    const data = await res.json();
+
+    return {
+      props: {
+        data,
+      },
+      revalidate: 60, // Re-generate page after 60 seconds
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      props: {
+        data: null,
+      },
+    };
+  }
+}
 
 export default HomePage;

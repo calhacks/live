@@ -5,18 +5,7 @@ import React from 'react';
 import SponsorPack from '../components/SponsorPack';
 import { apiBaseUrl } from '../lib/constants';
 
-const ResourcesPage = () => {
-  const [data, setData] = React.useState(null);
-
-  React.useEffect(() => {
-    fetch(`${apiBaseUrl}/live/resources`)
-      .then(async (res) => {
-        const { categories } = await res.json();
-        setData(categories);
-      })
-      .catch((err) => console.error(err));
-  }, [setData]);
-
+const ResourcesPage = ({ data }) => {
   return (
     <>
       <Header />
@@ -44,5 +33,26 @@ const ResourcesPage = () => {
     </>
   );
 };
+
+export async function getStaticProps() {
+  try {
+    const res = await fetch(`${apiBaseUrl}/live/resources`);
+    const { categories } = await res.json();
+
+    return {
+      props: {
+        data: categories,
+      },
+      revalidate: 60, // Re-generate page after 60 seconds
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      props: {
+        data: null,
+      },
+    };
+  }
+}
 
 export default ResourcesPage;

@@ -5,16 +5,7 @@ import Question from '../components/Question';
 import React from 'react';
 import { apiBaseUrl } from '../lib/constants';
 
-const FAQPage = () => {
-  const [data, setData] = React.useState(null);
-
-  React.useEffect(() => {
-    fetch(`${apiBaseUrl}/live/faq`).then(async (res) => {
-      const { categories } = await res.json();
-      setData(categories);
-    }).catch((err) => console.error(err));
-  }, [setData]);
-
+const FAQPage = ({ data }) => {
   return (
     <>
       <Header />
@@ -43,5 +34,26 @@ const FAQPage = () => {
     </>
   );
 };
+
+export async function getStaticProps() {
+  try {
+    const res = await fetch(`${apiBaseUrl}/live/faq`);
+    const { categories } = await res.json();
+
+    return {
+      props: {
+        data: categories,
+      },
+      revalidate: 60, // Re-generate page after 60 seconds
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      props: {
+        data: null,
+      },
+    };
+  }
+}
 
 export default FAQPage;
