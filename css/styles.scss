@@ -1,0 +1,94 @@
+@use './tags';
+@use './home';
+@use './prizes';
+@use './resources';
+@use './faq';
+@use './header';
+@use './map';
+@import './constants';
+@import './colors';
+
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..900;1,200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,200..900;1,200..900&display=swap');
+
+* {
+  font-family: Mulish;
+  color: $darkblue;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  overflow-x: hidden;
+}
+
+body {
+  background: $lightblue;
+}
+
+#content {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 3rem;
+
+  & > h1:first-child {
+    margin-top: 0;
+  }
+
+  @media only screen and (max-width: $responsive-threshold * 2 / 3) {
+    width: 90%;
+  }
+}
+
+.loader {
+  border: $loader-border solid $lighterblue;
+  border-top: $loader-border solid $darkblue;
+  border-radius: 50%;
+  width: $loader-size;
+  height: $loader-size;
+  animation: loader-spin 1.4s linear infinite;
+}
+@keyframes loader-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+footer {
+  padding-top: 10rem;
+  padding-bottom: 2rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  #footer-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    & > * {
+      margin-right: 2rem;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    img {
+      width: 2rem;
+    }
+  }
+
+  #footer-tagline {
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 0;
+  }
+}

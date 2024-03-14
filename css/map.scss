@@ -1,0 +1,26 @@
+#maps {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  margin-top: 1rem;
+
+  h1 {
+    text-align: center;
+
+    margin-top: 6rem;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  img {
+    flex: 1;
+    max-width: 100%;
+    min-height: 300px;
+    max-height: 90vh;
+    object-fit: contain;
+  }
+}
