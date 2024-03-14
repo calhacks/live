@@ -1,12 +1,33 @@
 import React from 'react';
 
-const Banner = () => {
+const Banner = ({ config }) => {
   return (
-    <div className="banner">
-      <a href="https://docs.google.com/document/d/1T8qeo0QuNbcXyyEgffzQ4uETbc5dHc-Ix60YbMAylWI/edit#heading=h.56hnonyorqys">
-        <p>HackerEarth Submission Guide</p>
-      </a>
-    </div>
+    <>
+      {config['banner_text'] && (
+        <div className="banner">
+          {config['banner_url'] ? (
+            <a href={config['banner_url']}>
+              <p>{config['banner_text']}</p>
+            </a>
+          ) : (
+            <p>{config['banner_text']}</p>
+          )}
+        </div>
+      )}
+      <style>
+        {`
+          :root {
+            --color-one: ${config['color-one']};
+            --color-two: ${config['color-two']};
+            --color-three: ${config['color-three']};
+            --color-four: ${config['color-four']};
+            --color-five: ${config['color-five']};
+          }
+          
+
+          `}
+      </style>
+    </>
   );
 };
 

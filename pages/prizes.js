@@ -1,13 +1,16 @@
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
+import Banner from '../components/Banner';
 import React from 'react';
 import { apiBaseUrl } from '../lib/constants';
+import getConfiguration from '../lib/configuration';
 
-const PrizesPage = ({ data }) => {
+const PrizesPage = ({ data, config }) => {
   return (
     <>
-      <Header />
+      <Banner config={config} />
+      <Header config={config} />
 
       <div id="content">
         <h1>Prizes</h1>
@@ -66,6 +69,7 @@ export async function getStaticProps() {
     return {
       props: {
         data: prizes,
+        config: await getConfiguration(),
       },
       revalidate: 60, // Re-generate page after 60 seconds
     };
@@ -74,6 +78,7 @@ export async function getStaticProps() {
     return {
       props: {
         data: null,
+        config: await getConfiguration(),
       },
     };
   }

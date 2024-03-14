@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..900;1,200..900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,200..900;1,200..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..900;1,200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,200..900;1,200..900&display=swap');
 #splash {
   width: 100%;
   display: flex;
@@ -222,7 +222,7 @@
   cursor: pointer;
 }
 #schedule #sections .section .section-events .event::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 18px;
   top: 0;
@@ -469,12 +469,12 @@
     padding: 16px 32px;
   }
   #prizes > div#prize-header span,
-#prizes > div div span,
-#prizes > div div a {
+  #prizes > div div span,
+  #prizes > div div a {
     font-size: 15px;
   }
   #prizes > div div:first-child > span,
-#prizes > div div a {
+  #prizes > div div a {
     padding: 8px 22px;
   }
 }
@@ -486,7 +486,7 @@
     align-items: stretch;
   }
   #prizes > div#prize-header,
-#prizes > div .desktop {
+  #prizes > div .desktop {
     display: none;
   }
   #prizes > div:nth-child(2) {
@@ -667,8 +667,9 @@ header #topnav a {
   text-decoration: none;
   margin-right: 2.4rem;
 }
-header #topnav a:hover::after, header #topnav a.active::after {
-  content: "";
+header #topnav a:hover::after,
+header #topnav a.active::after {
+  content: '';
   position: absolute;
   left: 15%;
   bottom: -6px;
@@ -697,7 +698,7 @@ header #topnav a.action:hover::after {
 }
 @media only screen and (max-width: 900px) {
   header #topnav button,
-header #topnav a {
+  header #topnav a {
     display: none;
   }
 }
@@ -722,7 +723,8 @@ header #topnav a {
     font-style: normal;
     margin-bottom: 0.5rem;
   }
-  header #topnav.responsive-open a:hover::after, header #topnav.responsive-open a.active::after {
+  header #topnav.responsive-open a:hover::after,
+  header #topnav.responsive-open a.active::after {
     bottom: -3px;
   }
   header #topnav.responsive-open a:last-of-type {

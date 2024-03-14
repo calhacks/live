@@ -13,7 +13,7 @@
 
 * {
   font-family: Mulish;
-  color: $darkblue;
+  color: var(--color-two);
 }
 
 html,
@@ -25,7 +25,7 @@ body {
 }
 
 body {
-  background: $lightblue;
+  background: var(--color-three);
 }
 
 #content {
@@ -43,8 +43,8 @@ body {
 }
 
 .loader {
-  border: $loader-border solid $lighterblue;
-  border-top: $loader-border solid $darkblue;
+  border: $loader-border solid var(--color-four);
+  border-top: $loader-border solid var(--color-two);
   border-radius: 50%;
   width: $loader-size;
   height: $loader-size;

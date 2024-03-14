@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import cn from 'classnames';
 import Head from 'next/head';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const nav = [
   {
@@ -36,62 +38,39 @@ const nav = [
   // },
 ];
 
-export default class Header extends React.Component {
-  constructor(props) {
-    super(props);
+const Header = ({ config }) => {
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
 
-    this.state = {
-      open: false,
-    };
-  }
-
-  toggleMenu = () => {
-    this.setState({ open: !this.state.open });
+  const toggleMenu = () => {
+    setOpen(!open);
   };
 
-  render() {
-    return (
-      <header>
-        <i className="material-icons icon" onClick={this.toggleMenu}>
-          menu
-        </i>
-        <img
-          id="logo"
-          src="https://calhacks-sierra.s3.us-west-2.amazonaws.com/assets/live/logo.svg"
-          alt="logo"
-          onClick={() => (window.location.href = '/')}
-        />
-        <div id="topnav" className={this.state.open ? 'responsive-open' : ''}>
-          {nav.map(({ title, href, action }) => (
-            <NavBarItem
-              key={title}
-              title={title}
-              href={href}
-              onClick={this.toggleMenu}
-              action={action}
-              active={typeof window != 'undefined' ? window.location.pathname === href : false}
-            />
-          ))}
-        </div>
-        <Head>
-          <title>Cal Hacks: Live</title>
-        </Head>
-      </header>
-    );
-  }
-}
+  return (
+    <header>
+      <i className="material-icons icon" onClick={toggleMenu}>
+        menu
+      </i>
+      <img id="logo" src={config.logo} alt="logo" onClick={() => router.push('/')} />
+      <div id="topnav" className={open ? 'responsive-open' : ''}>
+        {nav.map(({ title, href, action }) => (
+          <NavBarItem key={title} title={title} href={href} action={action} active={router.pathname === href} />
+        ))}
+      </div>
+      <Head>
+        <title>Cal Hacks: Live</title>
+      </Head>
+    </header>
+  );
+};
 
-class NavBarItem extends React.Component {
-  render() {
-    const { action, active, href, onClick, title } = this.props;
-
-    return (
-      <a className={cn({ action, active })} href={href} target={action ? '_blank' : '_top'} onClick={onClick}>
-        {title}
-      </a>
-    );
-  }
-}
+const NavBarItem = ({ action, active, href, onClick, title }) => {
+  return (
+    <Link href={href} className={cn({ action, active })} target={action ? '_blank' : '_top'}>
+      {title}
+    </Link>
+  );
+};
 
 NavBarItem.propTypes = {
   href: PropTypes.string,
@@ -100,3 +79,5 @@ NavBarItem.propTypes = {
   onClick: PropTypes.func,
   active: PropTypes.bool,
 };
+
+export default Header;

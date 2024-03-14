@@ -2,7 +2,7 @@
 @import './colors';
 
 #prizes {
-  background: $lighterblue;
+  background: var(--color-four);
   margin-top: 3rem;
   border-radius: 10px;
 
@@ -18,7 +18,7 @@
     }
 
     &:nth-child(2n) {
-      background: $superlightblue;
+      background: var(--color_five);
     }
 
     &:first-child {
@@ -62,7 +62,7 @@
       }
 
       &:first-child span {
-        background: $white;
+        background: #ffffff;
       }
 
       &:first-child span,
@@ -81,8 +81,8 @@
         display: inline-block;
         margin: 0;
 
-        color: $white;
-        background: $darkblue;
+        color: #ffffff;
+        background: var(--color-two);
         text-decoration: none;
       }
     }

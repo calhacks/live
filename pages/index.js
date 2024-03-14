@@ -1,29 +1,31 @@
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
+import Banner from '../components/Banner';
 import React from 'react';
 import { apiBaseUrl } from '../lib/constants';
 import classnames from 'classnames';
 import moment from 'moment-timezone';
-
-// [PDT] Feb 25th, 2024 @ 8:00 AM
-const hackStarts = new Date(1708876800 * 1000).getTime();
-
-// [PDT] Feb 25th, 2024 @ 7:00 PM
-const hackEnds = new Date(1708916400 * 1000).getTime();
+import getConfiguration from '../lib/configuration';
 
 const PACIFIC_TZ = 'America/Los_Angeles';
 const localTimezoneName = PACIFIC_TZ;
 let localTimezone;
 let notPDT;
 
-const HomePage = ({ data }) => {
+const HomePage = ({ data, config }) => {
   const [timeLeft, setTimeLeft] = React.useState(null);
   const [timezone, setTimezone] = React.useState(null);
   const [selectedDay, setSelectedDay] = React.useState(0);
   const [days, setDays] = React.useState([]);
   const [types, setTypes] = React.useState([]);
   const [openEvent, setOpenEvent] = React.useState(null);
+
+  // [PDT] Feb 25th, 2024 @ 8:00 AM
+  const hackStarts = new Date(config.start_date).getTime();
+
+  // [PDT] Feb 25th, 2024 @ 7:00 PM
+  const hackEnds = new Date(config.end_date).getTime();
 
   const [filteredTypes, setFilteredTypes] = React.useState([]);
   const toggleFilteredType = (type) =>
@@ -154,11 +156,12 @@ const HomePage = ({ data }) => {
 
   return (
     <>
-      <Header />
+      <Banner config={config} />
+      <Header config={config} />
 
       <div id="splash">
         <h2>Welcome to the Hack for Impact!</h2>
-        <img id="bigbear" src="https://calhacks-sierra.s3.us-west-2.amazonaws.com/assets/live/bigbear.svg" alt="bear" />
+        <img id="bigbear" src={config.hero_image} alt="bear" />
 
         <h2>
           {hackOver
@@ -312,12 +315,13 @@ const HomePage = ({ data }) => {
 
 export async function getStaticProps() {
   try {
-    const res = await fetch(`${apiBaseUrl}/live/schedule?tz=${localTimezoneName}`)
+    const res = await fetch(`${apiBaseUrl}/live/schedule?tz=${localTimezoneName}`);
     const data = await res.json();
 
     return {
       props: {
         data,
+        config: await getConfiguration(),
       },
       revalidate: 60, // Re-generate page after 60 seconds
     };
@@ -326,6 +330,7 @@ export async function getStaticProps() {
     return {
       props: {
         data: null,
+        config: await getConfiguration(),
       },
     };
   }
